@@ -204,6 +204,7 @@ class GameController: UIViewController {
         }
     }
     
+    ///
     func isPairMatch(word1: String, word2: String) -> Bool {
         triesMade += 1
         if pairsDict[word1] != nil && pairsDict[word1] == word2 { return true }
@@ -211,6 +212,7 @@ class GameController: UIViewController {
         return false
     }
     
+    ///
     func gameOver() {
         let ac = UIAlertController(title: "You Won", message: "You made \(triesMade) tries", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Play Again", style: .default, handler: { [weak self] action in
