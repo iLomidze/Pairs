@@ -1,0 +1,30 @@
+
+/* Class = "UIButton"; normalTitle = "Log Out"; ObjectID = "5oM-sA-H8K"; */
+"5oM-sA-H8K.normalTitle" = "გამოსვლა";
+
+/* Class = "UITextField"; placeholder = "Player Name"; ObjectID = "EqU-fx-JsP"; */
+"EqU-fx-JsP.placeholder" = "სახელი";
+
+/* Class = "UILabel"; text = "The Pairs Game"; ObjectID = "Ia7-fB-880"; */
+"Ia7-fB-880.text" = "The Pairs Game";
+
+/* Class = "UIButton"; normalTitle = "Add Pairs"; ObjectID = "bBS-SI-Eur"; */
+"bBS-SI-Eur.normalTitle" = "დაამატე სიტყვები";
+
+/* Class = "UIBarButtonItem"; title = "Menu"; ObjectID = "d6k-Fs-o6J"; */
+"d6k-Fs-o6J.title" = "მენიუ";
+
+/* Class = "UIButton"; normalTitle = "Play Game"; ObjectID = "tOk-dD-djN"; */
+"tOk-dD-djN.normalTitle" = "დაიწყე თამაში";
+
+/* Class = "UIButton"; normalTitle = "Authenticate"; ObjectID = "wEl-O9-iCr"; */
+"wEl-O9-iCr.normalTitle" = "ავტორიზაცია";
+
+/* Class = "UIButton"; normalTitle = "High Scores"; ObjectID = "43z-f3-s0k"; */
+"43z-f3-s0k.normalTitle" = "მიღწევები";
+
+/* Class = "UIButton"; normalTitle = "Change Password"; ObjectID = "BHW-VI-b8i"; */
+"BHW-VI-b8i.normalTitle" = "პაროლის შეცვლა";
+
+/* Class = "UIButton"; normalTitle = "High Scores"; ObjectID = "WUa-qy-kFc"; */
+"WUa-qy-kFc.title" = "მიღწევები"
