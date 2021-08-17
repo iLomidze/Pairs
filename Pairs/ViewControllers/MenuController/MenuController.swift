@@ -8,6 +8,15 @@
 import LocalAuthentication
 import UIKit
 
+class AppSettings {
+    
+    static let shared: AppSettings = AppSettings()
+    
+    private init() {}
+    
+    var chosenLanguage: AppLanguage?
+}
+
 class MenuController: UIViewController {
     
     // MARK: - Outlets
@@ -54,6 +63,11 @@ class MenuController: UIViewController {
             languagePicked = currentLanguage
         }
         setCorrectLanguageForPickAndApp()
+    }
+    
+    func setLanguage(language: AppLanguage?) {
+        AppSettings.shared.chosenLanguage = language
+        localizeStoryboard()
     }
     
     
@@ -115,9 +129,9 @@ class MenuController: UIViewController {
     }
     
     func emailFirebaseLogin() {
-        let ac = UIAlertController(title: "Network Login".localized(lang: languagePicked), message: "For this moment Sign with Apple is not available,\nplease proceed to the email authentication in order to store your high score".localized(lang: languagePicked), preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Play Offline".localized(lang: languagePicked), style: .cancel, handler: nil))
-        ac.addAction(UIAlertAction(title: "Email Log In".localized(lang: languagePicked), style: .default, handler: { [weak self] action in
+        let ac = UIAlertController(title: "Network Login".localized, message: "For this moment Sign with Apple is not available,\nplease proceed to the email authentication in order to store your high score".localized, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Play Offline".localized, style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "Email Log In".localized, style: .default, handler: { [weak self] action in
             guard let vc = self?.storyboard?.instantiateViewController(identifier: "AuthenticationController") as? AuthenticationController else { return }
             
             vc.languagePicked = self?.languagePicked
@@ -129,31 +143,31 @@ class MenuController: UIViewController {
     
     /// This is required because storyboard translates string based on the device system language - which may change via language picker
     func localizeStoryboard() {
-        AuthenticateButton.setTitle("Authenticate".localized(lang: languagePicked), for: .normal)
-        addPairsButton.setTitle("Add Pairs".localized(lang: languagePicked), for: .normal)
-        logOutButton.setTitle("Log Out".localized(lang: languagePicked), for: .normal)
-        playGameButton.setTitle("Play Game".localized(lang: languagePicked), for: .normal)
-        highScoresButton.setTitle("High Scores".localized(lang: languagePicked), for: .normal)
-        changePasswordButton.setTitle("Change Password".localized(lang: languagePicked), for: .normal)
+        AuthenticateButton.setTitle("Authenticate".localized, for: .normal)
+        addPairsButton.setTitle("Add Pairs".localized, for: .normal)
+        logOutButton.setTitle("Log Out".localized, for: .normal)
+        playGameButton.setTitle("Play Game".localized, for: .normal)
+        highScoresButton.setTitle("High Scores".localized, for: .normal)
+        changePasswordButton.setTitle("Change Password".localized, for: .normal)
         
         if nameTextField.text?.isEmpty ?? false {
-            nameTextField.placeholder = "Player Name".localized(lang: languagePicked)
+            nameTextField.placeholder = "Player Name".localized
         }
     }
     
     /// lets user enter password and it saves it afterwards
     func setPassword() {
-        let ac = UIAlertController(title: "Set Password".localized(lang: languagePicked), message: "This password is for additional safety reasons, which may be used in special cases".localized(lang: languagePicked), preferredStyle: .alert)
-        ac.addTextField { [weak self] textfield in
-            textfield.placeholder = "Enter Password".localized(lang: self?.languagePicked)
+        let ac = UIAlertController(title: "Set Password".localized, message: "This password is for additional safety reasons, which may be used in special cases".localized, preferredStyle: .alert)
+        ac.addTextField { textfield in
+            textfield.placeholder = "Enter Password".localized
             textfield.isSecureTextEntry = true
         }
-        ac.addTextField { [weak self] textfield in
-            textfield.placeholder = "Confirm Password".localized(lang: self?.languagePicked)
+        ac.addTextField { textfield in
+            textfield.placeholder = "Confirm Password".localized
             textfield.isSecureTextEntry = true
         }
-        ac.addAction(UIAlertAction(title: "Cancel".localized(lang: languagePicked), style: .cancel, handler: nil))
-        ac.addAction(UIAlertAction(title: "Set Password".localized(lang: languagePicked), style: .default, handler: { [weak self] _ in
+        ac.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "Set Password".localized, style: .default, handler: { [weak self] _ in
             guard let word1 = ac.textFields?.first?.text, !word1.isEmpty,
                   let word2 = ac.textFields?[1].text, !word2.isEmpty
                   else {
@@ -193,7 +207,7 @@ class MenuController: UIViewController {
         var error: NSError?
 
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            let reason = "Identify yourself!".localized(lang: languagePicked)
+            let reason = "Identify yourself!".localized
 
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
                 [weak self] success, authenticationError in
@@ -209,13 +223,13 @@ class MenuController: UIViewController {
                 }
             }
         } else {
-            let ac = UIAlertController(title: "No Biometrics Available".localized(lang: languagePicked), message: "Please choose password option to authenticate".localized(lang: languagePicked), preferredStyle: .alert)
-            ac.addTextField { [weak self] textfield in
-                textfield.placeholder = "Enter Password".localized(lang: self?.languagePicked)
+            let ac = UIAlertController(title: "No Biometrics Available".localized, message: "Please choose password option to authenticate".localized, preferredStyle: .alert)
+            ac.addTextField { textfield in
+                textfield.placeholder = "Enter Password".localized
                 textfield.isSecureTextEntry = true
             }
-            ac.addAction(UIAlertAction(title: "Cancel".localized(lang: languagePicked), style: .cancel, handler: nil))
-            ac.addAction(UIAlertAction(title: "Use Password".localized(lang: languagePicked), style: .default, handler: { [weak self] _ in
+            ac.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil))
+            ac.addAction(UIAlertAction(title: "Use Password".localized, style: .default, handler: { [weak self] _ in
                 if ac.textFields?.first?.text == self?.getPassword() {
                     self?.isAuthenticated = true
                 } else {
@@ -230,17 +244,17 @@ class MenuController: UIViewController {
     }
     
     @IBAction func addPairsButtonAction(_ sender: Any) {
-        let ac = UIAlertController(title: "Enter Pairs".localized(lang: languagePicked), message: "Enter 2 associated words".localized(lang: languagePicked), preferredStyle: .alert)
+        let ac = UIAlertController(title: "Enter Pairs".localized, message: "Enter 2 associated words".localized(lang: languagePicked), preferredStyle: .alert)
         
-        ac.addTextField { [weak self] curTextField in
-            curTextField.placeholder = "Enter Word 1".localized(lang: self?.languagePicked)
+        ac.addTextField { curTextField in
+            curTextField.placeholder = "Enter Word 1".localized
         }
-        ac.addTextField { [weak self] curTextField in
-            curTextField.placeholder = "Enter Word 2".localized(lang: self?.languagePicked)
+        ac.addTextField { curTextField in
+            curTextField.placeholder = "Enter Word 2".localized
         }
         
-        ac.addAction(UIAlertAction(title: "Cancel".localized(lang: languagePicked), style: .cancel, handler: nil))
-        ac.addAction(UIAlertAction(title: "Add".localized(lang: languagePicked), style: .default, handler: { [weak self] action in
+        ac.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "Add".localized, style: .default, handler: { [weak self] action in
             guard let textField1 = ac.textFields?.first, let textField2 = ac.textFields?[1] else { return }
             guard let fileName = self?.fileName else { return }
             guard let word1 = textField1.text, let word2 = textField2.text else { return }
@@ -275,22 +289,22 @@ class MenuController: UIViewController {
     }
     
     @IBAction func changePasswordAction(_ sender: Any) {
-        let ac = UIAlertController(title: "Change Password".localized(lang: languagePicked), message: nil, preferredStyle: .alert)
+        let ac = UIAlertController(title: "Change Password".localized, message: nil, preferredStyle: .alert)
     
-        ac.addTextField { [weak self] textfield in
-            textfield.placeholder = "Enter Current Password".localized(lang: self?.languagePicked)
+        ac.addTextField { textfield in
+            textfield.placeholder = "Enter Current Password".localized
             textfield.isSecureTextEntry = true
         }
-        ac.addTextField { [weak self] textfield in
-            textfield.placeholder = "Enter Password".localized(lang: self?.languagePicked)
+        ac.addTextField { textfield in
+            textfield.placeholder = "Enter Password".localized
             textfield.isSecureTextEntry = true
         }
-        ac.addTextField { [weak self] textfield in
-            textfield.placeholder = "Confirm Password".localized(lang: self?.languagePicked)
+        ac.addTextField { textfield in
+            textfield.placeholder = "Confirm Password".localized
             textfield.isSecureTextEntry = true
         }
-        ac.addAction(UIAlertAction(title: "Cancel".localized(lang: languagePicked), style: .cancel, handler: nil))
-        ac.addAction(UIAlertAction(title: "Set Password".localized(lang: languagePicked), style: .default, handler: { [weak self] _ in
+        ac.addAction(UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "Set Password".localized, style: .default, handler: { [weak self] _ in
             guard let currentPassword = ac.textFields?.first?.text, !currentPassword.isEmpty,
                   let newPassword1 = ac.textFields?[1].text, !newPassword1.isEmpty,
                   let newPassword2 = ac.textFields?[2].text, !newPassword2.isEmpty

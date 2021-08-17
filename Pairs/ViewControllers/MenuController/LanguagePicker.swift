@@ -15,15 +15,11 @@ extension MenuController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     /// Based on the device system language it selects correct row on language picker. If the device system  language is not implemented - it sets English
     func setCorrectLanguageForPickAndApp() {
-        guard let currentLanguage = Locale.current.languageCode else { return }
+        guard let currentLanguage = Locale.current.languageCode,
+              let appLang = AppLanguage(rawValue: currentLanguage) else { return }
         
-        if currentLanguage == "ka" {
-            pickerView.selectRow(LanguagePickerOptionTypes.GEO.rawValue, inComponent: 0, animated: true)
-            languagePicked = currentLanguage
-        } else {
-            pickerView.selectRow(LanguagePickerOptionTypes.ENG.rawValue, inComponent: 0, animated: true)
-            languagePicked = "en"
-        }
+        self.setLanguage(language: appLang)
+        self.pickerView.selectRow(appLang.index, inComponent: 0, animated: false)
     }
     
     
@@ -42,16 +38,8 @@ extension MenuController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch row {
-        case LanguagePickerOptionTypes.ENG.rawValue:
-            languagePicked = "en"
-            localizeStoryboard()
-        case LanguagePickerOptionTypes.GEO.rawValue:
-            languagePicked = "ka"
-            localizeStoryboard()
-        default:
-            return
-        }
+        guard let lang = AppLanguage.language(forIndex: row) else { return }
+        self.setLanguage(language: lang)
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -59,17 +47,12 @@ extension MenuController: UIPickerViewDelegate, UIPickerViewDataSource {
         let myImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         
         var rowString = String()
-        switch row {
-        case LanguagePickerOptionTypes.ENG.rawValue:
-            rowString = "ENG"
-            myImageView.image = UIImage(named:"eng")
-        case LanguagePickerOptionTypes.GEO.rawValue:
-            rowString = "GEO"
-            myImageView.image = UIImage(named:"geo")
-        default:
-            rowString = "Error: too many rows"
-            myImageView.image = nil
-        }
+        
+        guard let appLang = AppLanguage.language(forIndex: row) else { return UIView() }
+        
+        rowString = appLang.description
+        myImageView.image = UIImage(named: appLang.assetName)
+        
         let myLabel = UILabel(frame: CGRect(x: 60, y: 0, width: pickerView.bounds.width - 90, height: 60 ))
         myLabel.font = UIFont(name: "AmericanTypewriter-Bold", size: 20)
         myLabel.text = rowString
